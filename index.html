@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>方角ルーレット</title>
   <style>
     body {
-      background: #f4f4f4;
+      margin: 0;
+      background: #f0f0f0;
       font-family: sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       height: 100vh;
-      margin: 0;
     }
 
     h1 {
       margin-bottom: 20px;
     }
 
-    .roulette-wrapper {
+    .roulette-container {
       position: relative;
       width: 300px;
       height: 300px;
@@ -30,10 +30,7 @@
       width: 100%;
       height: 100%;
       border-radius: 50%;
-      border: 5px solid #333;
-      box-sizing: border-box;
       position: relative;
-      overflow: hidden;
       transition: transform 3s ease-out;
     }
 
@@ -44,14 +41,14 @@
       top: 50%;
       left: 50%;
       transform-origin: 0% 0%;
-      background: red;
-      clip-path: polygon(0% 0%, 100% 0%, 100% 100%);
+      background-color: red;
+      clip-path: polygon(0 0, 100% 0, 0 100%);
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
-      font-size: 1.5rem;
       font-weight: bold;
+      font-size: 1.5rem;
     }
 
     .segment:nth-child(1) {
@@ -104,10 +101,9 @@
   </style>
 </head>
 <body>
-
   <h1>方角ルーレット</h1>
 
-  <div class="roulette-wrapper">
+  <div class="roulette-container">
     <div class="pointer"></div>
     <div class="wheel" id="wheel">
       <div class="segment">北</div>
@@ -119,26 +115,26 @@
 
   <button onclick="spin()">回す</button>
 
-  <!-- 音 -->
   <audio id="sound" src="ding.mp3" preload="auto"></audio>
 
   <script>
     let angle = 0;
-    const sectorAngles = [0, 90, 180, 270]; // 各方角の角度
+    const sectors = ['北', '東', '南', '西'];
+    const sectorAngles = [0, 90, 180, 270];
+    const wheel = document.getElementById("wheel");
     const sound = document.getElementById("sound");
 
     function spin() {
-      const randomIndex = Math.floor(Math.random() * 4);
-      const spins = Math.floor(Math.random() * 3) + 3; // 3〜5周
-      angle += 360 * spins + (360 - sectorAngles[randomIndex]);
+      const index = Math.floor(Math.random() * 4);
+      const extraSpins = Math.floor(Math.random() * 3) + 3; // 3~5周
+      angle += 360 * extraSpins + (360 - sectorAngles[index]);
 
-      const wheel = document.getElementById("wheel");
       wheel.style.transform = `rotate(${angle}deg)`;
 
       setTimeout(() => {
         sound.currentTime = 0;
         sound.play();
-      }, 3000); // 回転後に音
+      }, 3000); // 回転が終わるタイミングで音
     }
   </script>
 </body>
