@@ -18,6 +18,7 @@
 
     h1 {
       margin-bottom: 20px;
+      font-size: 2rem;
     }
 
     .roulette-container {
@@ -46,9 +47,15 @@
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+
+    .segment span {
+      transform: rotate(-45deg);
+      transform-origin: center;
       color: white;
+      font-size: 1.2rem;
       font-weight: bold;
-      font-size: 1.5rem;
+      margin-left: -20px;
     }
 
     .segment:nth-child(1) {
@@ -106,10 +113,10 @@
   <div class="roulette-container">
     <div class="pointer"></div>
     <div class="wheel" id="wheel">
-      <div class="segment">北</div>
-      <div class="segment">東</div>
-      <div class="segment">南</div>
-      <div class="segment">西</div>
+      <div class="segment"><span>北</span></div>
+      <div class="segment"><span>東</span></div>
+      <div class="segment"><span>南</span></div>
+      <div class="segment"><span>西</span></div>
     </div>
   </div>
 
@@ -119,22 +126,22 @@
 
   <script>
     let angle = 0;
-    const sectors = ['北', '東', '南', '西'];
-    const sectorAngles = [0, 90, 180, 270];
+    const baseAngles = [0, 90, 180, 270];
     const wheel = document.getElementById("wheel");
     const sound = document.getElementById("sound");
 
     function spin() {
       const index = Math.floor(Math.random() * 4);
-      const extraSpins = Math.floor(Math.random() * 3) + 3; // 3~5周
-      angle += 360 * extraSpins + (360 - sectorAngles[index]);
+      const randomOffset = Math.floor(Math.random() * 20 - 10); // ±10度までずらす
+      const extraSpins = Math.floor(Math.random() * 3) + 3; // 3〜5回転
+      angle += 360 * extraSpins + (360 - baseAngles[index]) + randomOffset;
 
       wheel.style.transform = `rotate(${angle}deg)`;
 
       setTimeout(() => {
         sound.currentTime = 0;
         sound.play();
-      }, 3000); // 回転が終わるタイミングで音
+      }, 3000);
     }
   </script>
 </body>
