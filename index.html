@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>方角ルーレット</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#ffffff"/>
+  <style>
+    /* ここは省略、前のCSSと同じです */
+  </style>
+</head>
+<body>
+  <h1>方角ルーレット</h1>
+  <div class="pointer"></div>
+  <div class="roulette" id="roulette">
+    <div class="directions" id="directions">
+      <div class="direction" style="transform: rotate(0deg) translateY(-90px);">北</div>
+      <div class="direction" style="transform: rotate(90deg) translateY(-90px);">東</div>
+      <div class="direction" style="transform: rotate(180deg) translateY(-90px);">南</div>
+      <div class="direction" style="transform: rotate(270deg) translateY(-90px);">西</div>
+    </div>
+  </div>
+  <button onclick="spin()">回す</button>
+
+  <!-- 音ファイル -->
+  <audio id="sound" src="ding.mp3" preload="auto"></audio>
+
+  <script>
+    let angle = 0;
+    const directions = ["北", "東", "南", "西"];
+    const directionAngles = [0, 90, 180, 270];
+
+    function spin() {
+      const sound = document.getElementById("sound");
+      const randomIndex = Math.floor(Math.random() * 4);
+      const spins = Math.floor(Math.random() * 3) + 3; // 3〜5周
+      angle += 360 * spins + (360 - directionAngles[randomIndex]);
+      const roulette = document.getElementById("directions");
+      roulette.style.transform = `rotate(${angle}deg)`;
+
+      setTimeout(() => {
+        sound.currentTime = 0;
+        sound.play();
+      }, 3000); // 回転アニメ後に音を鳴らす（3秒）
+    }
+
+    // PWA登録
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(reg => console.log('Service Worker registered:', reg));
+    }
+  </script>
+</body>
+</html>
